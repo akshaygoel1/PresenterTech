@@ -27,6 +27,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public Transform professorSpawnPoint;
 
     public List<Transform> studentSpawnPoints = new List<Transform>();
+    public List<NetworkPlayer> otherPlayers = new List<NetworkPlayer>();
+    public NetworkPlayer myPlayer = null;
     #endregion
 
 
@@ -42,6 +44,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         {
             Destroy(this);
         }
+    }
+
+    public void AddPlayer(NetworkPlayer networkPlayer)
+    {
+        otherPlayers.Add(networkPlayer);
+    }
+
+    public void AddMyPlayer(NetworkPlayer networkPlayer)
+    {
+        myPlayer = networkPlayer;
     }
 
     void Start()

@@ -27,8 +27,8 @@ namespace Photon.Chat
     public class ChatPeer : PhotonPeer
     {
         /// <summary>Name Server Host Name for Photon Cloud. Without port and without any prefix.</summary>
-        public string NameServerHost = "ns.photonengine.io";
-
+        public string NameServerHost = "ns.exitgames.com";
+        
         /// <summary>Name Server port per protocol (the UDP port is different than TCP, etc).</summary>
         private static readonly Dictionary<ConnectionProtocol, int> ProtocolToNameServerPort = new Dictionary<ConnectionProtocol, int>() { { ConnectionProtocol.Udp, 5058 }, { ConnectionProtocol.Tcp, 4533 }, { ConnectionProtocol.WebSocket, 9093 }, { ConnectionProtocol.WebSocketSecure, 19093 } }; //, { ConnectionProtocol.RHttp, 6063 } };
 
@@ -48,23 +48,23 @@ namespace Photon.Chat
 
 
         // Sets up the socket implementations to use, depending on platform
-        [System.Diagnostics.Conditional("SUPPORTED_UNITY")]
+        [Conditional("SUPPORTED_UNITY")]
         private void ConfigUnitySockets()
         {
             Type websocketType = null;
             #if (UNITY_XBOXONE || UNITY_GAMECORE) && !UNITY_EDITOR
-            websocketType = Type.GetType("ExitGames.Client.Photon.SocketNativeSource, Assembly-CSharp", false);
+            websocketType = Type.GetType("ExitGames.Client.Photon.SocketNativeSource, PhotonWebSocket", false);
             if (websocketType == null)
             {
                 websocketType = Type.GetType("ExitGames.Client.Photon.SocketNativeSource, Assembly-CSharp-firstpass", false);
             }
             if (websocketType == null)
             {
-                websocketType = Type.GetType("ExitGames.Client.Photon.SocketNativeSource, PhotonRealtime", false);
+                websocketType = Type.GetType("ExitGames.Client.Photon.SocketNativeSource, Assembly-CSharp", false);
             }
-            if (websocketType != null)
+            if (websocketType == null)
             {
-                this.SocketImplementationConfig[ConnectionProtocol.Udp] = websocketType;    // on Xbox, the native socket plugin supports UDP as well
+                UnityEngine.Debug.LogError("UNITY_XBOXONE is defined but peer could not find SocketNativeSource. Check your project files to make sure the native WSS implementation is available. Won't connect.");
             }
             #else
             // to support WebGL export in Unity, we find and assign the SocketWebTcp class (if it's in the project).
@@ -86,7 +86,7 @@ namespace Photon.Chat
                 this.SocketImplementationConfig[ConnectionProtocol.WebSocketSecure] = websocketType;
             }
 
-            #if NET_4_6 && (UNITY_EDITOR || !ENABLE_IL2CPP) && !NETFX_CORE
+            #if NET_4_6 && (UNITY_EDITOR || !ENABLE_IL2CPP)
             this.SocketImplementationConfig[ConnectionProtocol.Udp] = typeof(SocketUdpAsync);
             this.SocketImplementationConfig[ConnectionProtocol.Tcp] = typeof(SocketTcpAsync);
             #endif
@@ -104,7 +104,7 @@ namespace Photon.Chat
         {
             var protocolPort = 0;
             ProtocolToNameServerPort.TryGetValue(this.TransportProtocol, out protocolPort);
-
+            
             if (this.NameServerPortOverride != 0)
             {
                 this.Listener.DebugReturn(DebugLevel.INFO, string.Format("Using NameServerPortInAppSettings as port for Name Server: {0}", this.NameServerPortOverride));
@@ -162,7 +162,7 @@ namespace Photon.Chat
                 if (authValues.AuthType != CustomAuthenticationType.None)
                 {
                     opParameters[ParameterCode.ClientAuthenticationType] = (byte) authValues.AuthType;
-                    if (authValues.Token != null)
+                    if (!string.IsNullOrEmpty(authValues.Token))
                     {
                         opParameters[ParameterCode.Secret] = authValues.Token;
                     }
@@ -189,44 +189,28 @@ namespace Photon.Chat
     /// </summary>
     public enum CustomAuthenticationType : byte
     {
-        /// <summary>Use a custom authentication service. Currently the only implemented option.</summary>
+        /// <summary>Use a custom authentification service. Currently the only implemented option.</summary>
         Custom = 0,
 
-        /// <summary>Authenticates users by their Steam Account. Set Steam's ticket as "ticket" via AddAuthParameter().</summary>
+        /// <summary>Authenticates users by their Steam Account. Set auth values accordingly!</summary>
         Steam = 1,
 
-        /// <summary>Authenticates users by their Facebook Account.  Set Facebooks's tocken as "token" via AddAuthParameter().</summary>
+        /// <summary>Authenticates users by their Facebook Account. Set auth values accordingly!</summary>
         Facebook = 2,
 
-        /// <summary>Authenticates users by their Oculus Account and token. Set Oculus' userid as "userid" and nonce as "nonce" via AddAuthParameter().</summary>
+        /// <summary>Authenticates users by their Oculus Account and token.</summary>
         Oculus = 3,
 
-        /// <summary>Authenticates users by their PSN Account and token on PS4. Set token as "token", env as "env" and userName as "userName" via AddAuthParameter().</summary>
-        PlayStation4 = 4,
-        [Obsolete("Use PlayStation4 or PlayStation5 as needed")]
+        /// <summary>Authenticates users by their PSN Account and token.</summary>
         PlayStation = 4,
 
-        /// <summary>Authenticates users by their Xbox Account. Pass the XSTS token via SetAuthPostData().</summary>
+        /// <summary>Authenticates users by their Xbox Account and XSTS token.</summary>
         Xbox = 5,
 
-        /// <summary>Authenticates users by their HTC Viveport Account. Set userToken as "userToken" via AddAuthParameter().</summary>
+        /// <summary>Authenticates users by their HTC VIVEPORT Account and user token.</summary>
         Viveport = 10,
 
-        /// <summary>Authenticates users by their NSA ID. Set token  as "token" and appversion as "appversion" via AddAuthParameter(). The appversion is optional.</summary>
-        NintendoSwitch = 11,
-
-        /// <summary>Authenticates users by their PSN Account and token on PS5. Set token as "token", env as "env" and userName as "userName" via AddAuthParameter().</summary>
-        PlayStation5 = 12,
-        [Obsolete("Use PlayStation4 or PlayStation5 as needed")]
-        Playstation5 = 12,
-
-        /// <summary>Authenticates users with Epic Online Services (EOS). Set token as "token" and ownershipToken as "ownershipToken" via AddAuthParameter(). The ownershipToken is optional.</summary>
-        Epic = 13,
-
-        /// <summary>Authenticates users with Facebook Gaming api. Set token as "token" via AddAuthParameter().</summary>
-        FacebookGaming = 15,
-
-        /// <summary>Disables custom authentication. Same as not providing any AuthenticationValues for connect (more precisely for: OpAuthenticate).</summary>
+        /// <summary>Disables custom authentification. Same as not providing any AuthenticationValues for connect (more precisely for: OpAuthenticate).</summary>
         None = byte.MaxValue
     }
 
@@ -276,7 +260,7 @@ namespace Photon.Chat
 
         /// <summary>Internal <b>Photon token</b>. After initial authentication, Photon provides a token for this client, subsequently used as (cached) validation.</summary>
         /// <remarks>Any token for custom authentication should be set via SetAuthPostData or AddAuthParameter.</remarks>
-        public object Token { get; protected internal set; }
+        public string Token { get; protected internal set; }
 
         /// <summary>The UserId should be a unique identifier per user. This is for finding friends, etc..</summary>
         /// <remarks>See remarks of AuthValues for info about how this is set and used.</remarks>
@@ -335,7 +319,7 @@ namespace Photon.Chat
         /// <returns>string representation of this object.</returns>
         public override string ToString()
         {
-            return string.Format("AuthenticationValues Type: {3} UserId: {0}, GetParameters: {1} Token available: {2}", this.UserId, this.AuthGetParameters, this.Token != null, this.AuthType);
+            return string.Format("AuthenticationValues Type: {3} UserId: {0}, GetParameters: {1} Token available: {2}", this.UserId, this.AuthGetParameters, !string.IsNullOrEmpty(this.Token), this.AuthType);
         }
 
         /// <summary>

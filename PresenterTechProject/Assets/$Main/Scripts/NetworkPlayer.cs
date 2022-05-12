@@ -11,6 +11,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     {
         if (!photonView.IsMine)
         {
+            NetworkManager.instance.AddPlayer(this);
             MonoBehaviour[] scripts = GetComponentsInChildren<MonoBehaviour>();
             for (int i = 0; i < scripts.Length; i++)
             {
@@ -23,6 +24,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
         }
         else
         {
+            NetworkManager.instance.AddMyPlayer(this);
             Camera.main.GetComponent<PlayerCam>().SetPlayer(this.transform);
         }
 
