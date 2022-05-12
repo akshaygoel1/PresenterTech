@@ -1000,7 +1000,6 @@ GameObject:
   - component: {fileID: 1371824538}
   - component: {fileID: 1371824537}
   - component: {fileID: 1371824536}
-  - component: {fileID: 1371824539}
   m_Layer: 0
   m_Name: VoiceManager
   m_TagString: Untagged
@@ -1076,8 +1075,7 @@ MonoBehaviour:
   updateInterval: 50
   runInBackground: 1
   statsResetInterval: 1000
-  speakerPrefab: {fileID: 795557376765632840, guid: c66f95138a183a84d9c4a14e1d39b1c1,
-    type: 3}
+  speakerPrefab: {fileID: 0}
   primaryRecorder: {fileID: 1371824536}
   globalRecordersLogLevel: 1
   globalSpeakersLogLevel: 1
@@ -1123,23 +1121,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1371824539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1371824535}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65b99afb3758e9e4689c28a18224eb8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RandomRoom: 1
-  autoConnect: 1
-  autoTransmit: 1
-  publishUserId: 0
-  RoomName: 
 --- !u!1 &1932796912
 GameObject:
   m_ObjectHideFlags: 0
