@@ -1,4 +1,6 @@
 ﻿using Photon.Pun;
+using Photon.Voice.PUN;
+using Photon.Voice.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +20,8 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
                 if (scripts[i] is NetworkPlayer) continue;
                 else if (scripts[i] is PhotonView) continue;
                 else if (scripts[i] is PhotonTransformView) continue;
+                else if (scripts[i] is PhotonVoiceView) continue;
+                else if (scripts[i] is Speaker) continue;
 
                 Destroy(scripts[i]);
             }
