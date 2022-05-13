@@ -24,7 +24,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
                 muteButton.SetActive(true);
             }
 
-            NetworkManager.instance.AddPlayer(this);
+            GameManager.instance.networkManager.AddPlayer(this);
             MonoBehaviour[] scripts = GetComponentsInChildren<MonoBehaviour>();
             for (int i = 0; i < scripts.Length; i++)
             {
@@ -44,11 +44,16 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
         }
         else
         {
-            NetworkManager.instance.AddMyPlayer(this);
-            NetworkManager.instance.AddPlayer(this);
+            GameManager.instance.networkManager.AddMyPlayer(this);
+            GameManager.instance.networkManager.AddPlayer(this);
             if (role == ERole.Student)
             {
+                GameManager.instance.uiManager.SetMutedText(true);
                 photonVoiceView.RecorderInUse.TransmitEnabled = false;
+            }
+            else
+            {
+                GameManager.instance.uiManager.SetMutedText(false);
             }
             Camera.main.GetComponent<PlayerCam>().SetPlayer(this.transform);
         }
@@ -64,13 +69,6 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
 
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && photonView.IsMine)
-        {
-            if (this.role != ERole.Professor)
-            {
-                ToggleMic();
-            }
-        }
     }
 
     public void ToggleMic()
@@ -82,7 +80,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     [PunRPC]
     public void RPC_SpeakerIcon(int photonViewId, bool enabled)
     {
-        NetworkManager.instance.otherPlayers.Find(x => x.photonView.ViewID == photonViewId).speakingGO.SetActive(enabled);
+        GameManager.instance.networkManager.allPlayers.Find(x => x.photonView.ViewID == photonViewId).speakingGO.SetActive(enabled);
     }
 
 
@@ -90,20 +88,35 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     public void RPC_ToggleMic(int photonViewId)
     {
 
-        NetworkPlayer np = NetworkManager.instance.otherPlayers.Find(x => x.photonView.ViewID == photonViewId);
+        NetworkPlayer np = GameManager.instance.networkManager.allPlayers.Find(x => x.photonView.ViewID == photonViewId);
+        np.isMicUnmuted = !np.isMicUnmuted;
         if (np.photonView.IsMine)
         {
-            np.photonVoiceView.RecorderInUse.TransmitEnabled = !isMicUnmuted;
+            np.photonVoiceView.RecorderInUse.TransmitEnabled = np.isMicUnmuted;
         }
-        np.isMicUnmuted = !np.isMicUnmuted;
+
+
+
         if (np.isMicUnmuted)
         {
             np.micIcon.sprite = unmuted;
+            if (np.photonView.IsMine)
+            {
+                GameManager.instance.uiManager.SetMutedText(false);
+            }
         }
         else
         {
             np.micIcon.sprite = muted;
+            np.speakingGO.SetActive(false);
+            if (np.photonView.IsMine)
+            {
+                GameManager.instance.uiManager.SetMutedText(true);
+            }
+
         }
+
+
 
     }
 }

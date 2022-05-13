@@ -9,7 +9,6 @@ using System;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
-    public static NetworkManager instance = null;
     public delegate void PropertiesChanged(ExitGames.Client.Photon.Hashtable propertiesThatChanged);
 
     public static event PropertiesChanged RoomPropsChanged;
@@ -27,7 +26,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public Transform professorSpawnPoint;
 
     public List<Transform> studentSpawnPoints = new List<Transform>();
-    public List<NetworkPlayer> otherPlayers = new List<NetworkPlayer>();
+    public List<NetworkPlayer> allPlayers = new List<NetworkPlayer>();
     public NetworkPlayer myPlayer = null;
     #endregion
 
@@ -35,20 +34,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private void Awake()
     {
 
-        if (instance == null)
-        {
-            instance = this;
-            PhotonNetwork.AutomaticallySyncScene = true;
-        }
-        else
-        {
-            Destroy(this);
-        }
+        PhotonNetwork.AutomaticallySyncScene = true;
+
     }
 
     public void AddPlayer(NetworkPlayer networkPlayer)
     {
-        otherPlayers.Add(networkPlayer);
+        allPlayers.Add(networkPlayer);
     }
 
     public void AddMyPlayer(NetworkPlayer networkPlayer)
