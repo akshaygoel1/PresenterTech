@@ -86,15 +86,20 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     [PunRPC]
     public void RPC_ToggleMic(int photonViewId)
     {
-        NetworkManager.instance.otherPlayers.Find(x => x.photonView.ViewID == photonViewId).photonVoiceView.RecorderInUse.TransmitEnabled = !isMicUnmuted;
-        isMicUnmuted = !isMicUnmuted;
-        if (isMicUnmuted)
+
+        NetworkPlayer np = NetworkManager.instance.otherPlayers.Find(x => x.photonView.ViewID == photonViewId);
+        if (np.photonView.IsMine)
         {
-            micIcon.sprite = unmuted;
+            np.photonVoiceView.RecorderInUse.TransmitEnabled = !isMicUnmuted;
+        }
+        np.isMicUnmuted = !np.isMicUnmuted;
+        if (np.isMicUnmuted)
+        {
+            np.micIcon.sprite = unmuted;
         }
         else
         {
-            micIcon.sprite = muted;
+            np.micIcon.sprite = muted;
         }
 
     }
