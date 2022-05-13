@@ -60,6 +60,14 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
                 photonView.RPC("RPC_SpeakerIcon", RpcTarget.All, photonView.ViewID, this.photonVoiceView.IsRecording);
 
         }
+
+        if (Input.GetKeyDown(KeyCode.Space) && photonView.IsMine)
+        {
+            if (this.role != ERole.Professor)
+            {
+                ToggleMic();
+            }
+        }
     }
 
     public void ToggleMic()
