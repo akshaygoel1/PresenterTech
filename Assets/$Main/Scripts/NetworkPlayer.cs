@@ -41,6 +41,6 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        speakingGO.SetActive(this.photonVoiceView.IsSpeaking);
+        speakingGO.SetActive(this.photonVoiceView.IsRecording);
     }
 }

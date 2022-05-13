@@ -1021,8 +1021,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   logLevel: 3
   ignoreGlobalLogLevel: 0
-  voiceDetection: 0
-  voiceDetectionThreshold: 0.01
+  voiceDetection: 1
+  voiceDetectionThreshold: 0.05
   voiceDetectionDelayMs: 500
   unityMicrophoneDevice: Microphone (WO Mic Device)
   photonMicrophoneDeviceId: 0

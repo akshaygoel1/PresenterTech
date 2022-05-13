@@ -591,6 +591,7 @@ MonoBehaviour:
   role: 2
   speakingGO: {fileID: 1920907554462988267}
   photonVoiceView: {fileID: 4409959397037116180}
+  audioSource: {fileID: 0}
 --- !u!114 &7695391181261088587
 MonoBehaviour:
   m_ObjectHideFlags: 0
