@@ -62,6 +62,10 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
         }
     }
 
+    public void ToggleMic()
+    {
+        photonView.RPC("RPC_ToggleMic", RpcTarget.All, photonView.ViewID);
+    }
 
     [PunRPC]
     public void RPC_SpeakerIcon(int photonViewId, bool enabled)
