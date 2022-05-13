@@ -36,6 +36,8 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
                 else if (scripts[i] is Button) continue;
                 else if (scripts[i] is Image) continue;
                 else if (scripts[i] is EventCamera) continue;
+                else if (scripts[i] is CanvasScaler) continue;
+                else if (scripts[i] is GraphicRaycaster) continue;
 
                 Destroy(scripts[i]);
             }
