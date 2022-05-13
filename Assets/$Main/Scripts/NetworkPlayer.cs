@@ -64,6 +64,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
 
     public void ToggleMic()
     {
+        Debug.Log("Mic toggle");
         photonView.RPC("RPC_ToggleMic", RpcTarget.All, photonView.ViewID);
     }
 
