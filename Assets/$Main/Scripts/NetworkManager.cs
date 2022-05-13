@@ -126,7 +126,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void CreatePlayer()
     {
-        if (PlayerSetup.instance.GetRole() == PlayerSetup.ERole.Student)
+        if (PlayerSetup.instance.GetRole() == ERole.Student)
         {
             int randomSpawnIndex = UnityEngine.Random.Range(0, studentSpawnPoints.Count);
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Student"), studentSpawnPoints[randomSpawnIndex].localPosition, studentSpawnPoints[randomSpawnIndex].localRotation, 0);

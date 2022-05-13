@@ -8,7 +8,7 @@ using UnityEngine;
 public class NetworkPlayer : MonoBehaviourPunCallbacks
 {
     public PhotonView photonView;
-
+    public ERole role = ERole.None;
     private void Start()
     {
         if (!photonView.IsMine)
@@ -28,6 +28,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
         }
         else
         {
+            role = PlayerSetup.instance.GetRole();
             NetworkManager.instance.AddMyPlayer(this);
             Camera.main.GetComponent<PlayerCam>().SetPlayer(this.transform);
         }

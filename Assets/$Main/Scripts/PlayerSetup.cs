@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+public enum ERole
+{
+    None,
+    Professor,
+    Student
+}
 public class PlayerSetup : MonoBehaviour
 {
     public static PlayerSetup instance = null;
 
-    public enum ERole
-    {
-        None,
-        Professor,
-        Student
-    }
+
 
     ERole role = ERole.None;
 
