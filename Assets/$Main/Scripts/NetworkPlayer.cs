@@ -34,6 +34,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
         else
         {
             NetworkManager.instance.AddMyPlayer(this);
+            NetworkManager.instance.AddPlayer(this);
             Camera.main.GetComponent<PlayerCam>().SetPlayer(this.transform);
         }
 
@@ -41,6 +42,17 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        speakingGO.SetActive(this.photonVoiceView.IsRecording);
+        if (this.photonVoiceView.RecorderInUse != null && this.photonVoiceView.RecorderInUse.TransmitEnabled && photonView.IsMine)
+        {
+            if (this.photonVoiceView.IsRecording != speakingGO.activeInHierarchy)
+                photonView.RPC("RPC_SpeakerIcon", RpcTarget.All, photonView.ViewID, this.photonVoiceView.IsRecording);
+
+        }
+    }
+
+    [PunRPC]
+    public void RPC_SpeakerIcon(int photonViewId, bool enabled)
+    {
+        NetworkManager.instance.otherPlayers.Find(x => x.photonView.ViewID == photonViewId).speakingGO.SetActive(enabled);
     }
 }
