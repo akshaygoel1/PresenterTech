@@ -4,11 +4,14 @@ using Photon.Voice.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class NetworkPlayer : MonoBehaviourPunCallbacks
 {
     public PhotonView photonView;
     public ERole role = ERole.None;
+    public GameObject speakingGO;
+    public PhotonVoiceView photonVoiceView;
+    public AudioSource audioSource;
     private void Start()
     {
         if (!photonView.IsMine)
@@ -22,16 +25,22 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
                 else if (scripts[i] is PhotonTransformView) continue;
                 else if (scripts[i] is PhotonVoiceView) continue;
                 else if (scripts[i] is Speaker) continue;
+                else if (scripts[i] is Button) continue;
+                else if (scripts[i] is Image) continue;
 
                 Destroy(scripts[i]);
             }
         }
         else
         {
-            role = PlayerSetup.instance.GetRole();
             NetworkManager.instance.AddMyPlayer(this);
             Camera.main.GetComponent<PlayerCam>().SetPlayer(this.transform);
         }
 
+    }
+
+    private void Update()
+    {
+        speakingGO.SetActive(this.photonVoiceView.IsSpeaking);
     }
 }

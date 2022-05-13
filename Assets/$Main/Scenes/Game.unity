@@ -1068,6 +1068,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81d9debcbaf99472bb70ffc2f99cb23f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisconnectAfterKeepAlive: 0
   KeepAliveInBackground: 60000
   ApplyDontDestroyOnLoad: 1
   logLevel: 1
@@ -1086,6 +1087,7 @@ MonoBehaviour:
     MaxDelayHard: 1000
   Settings:
     AppIdRealtime: 
+    AppIdFusion: 
     AppIdChat: 
     AppIdVoice: 
     AppVersion: 
