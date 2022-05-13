@@ -40,6 +40,8 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - ChangeColour
+  - RPC_SpeakerIcon
+  - RPC_ToggleMic
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

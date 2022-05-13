@@ -9,13 +9,21 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
 {
     public PhotonView photonView;
     public ERole role = ERole.None;
-    public GameObject speakingGO;
+    public GameObject speakingGO, muteButton;
     public PhotonVoiceView photonVoiceView;
-    public AudioSource audioSource;
+    bool isMicUnmuted = false;
+    public Sprite muted, unmuted;
+    public Image micIcon;
+
     private void Start()
     {
         if (!photonView.IsMine)
         {
+            if (PlayerSetup.instance.GetRole() == ERole.Professor)
+            {
+                muteButton.SetActive(true);
+            }
+
             NetworkManager.instance.AddPlayer(this);
             MonoBehaviour[] scripts = GetComponentsInChildren<MonoBehaviour>();
             for (int i = 0; i < scripts.Length; i++)
@@ -35,6 +43,10 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
         {
             NetworkManager.instance.AddMyPlayer(this);
             NetworkManager.instance.AddPlayer(this);
+            if (role == ERole.Student)
+            {
+                photonVoiceView.RecorderInUse.TransmitEnabled = false;
+            }
             Camera.main.GetComponent<PlayerCam>().SetPlayer(this.transform);
         }
 
@@ -50,9 +62,27 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
         }
     }
 
+
     [PunRPC]
     public void RPC_SpeakerIcon(int photonViewId, bool enabled)
     {
         NetworkManager.instance.otherPlayers.Find(x => x.photonView.ViewID == photonViewId).speakingGO.SetActive(enabled);
+    }
+
+
+    [PunRPC]
+    public void RPC_ToggleMic(int photonViewId)
+    {
+        NetworkManager.instance.otherPlayers.Find(x => x.photonView.ViewID == photonViewId).photonVoiceView.RecorderInUse.TransmitEnabled = !isMicUnmuted;
+        isMicUnmuted = !isMicUnmuted;
+        if (isMicUnmuted)
+        {
+            micIcon.sprite = unmuted;
+        }
+        else
+        {
+            micIcon.sprite = muted;
+        }
+
     }
 }

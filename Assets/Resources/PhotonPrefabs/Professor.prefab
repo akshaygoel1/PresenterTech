@@ -471,8 +471,11 @@ MonoBehaviour:
   photonView: {fileID: 8992915862504927677}
   role: 1
   speakingGO: {fileID: 1709653259558686646}
+  muteButton: {fileID: 5655148930996938005}
   photonVoiceView: {fileID: 468567916949664004}
-  audioSource: {fileID: 0}
+  muted: {fileID: 21300000, guid: 58fdc33796786304ca1ef8ae3af1356b, type: 3}
+  unmuted: {fileID: 21300000, guid: 4c4fe505d7d6f7a4480d3428a30caf40, type: 3}
+  micIcon: {fileID: 5000041982547938733}
 --- !u!114 &7246950831132964118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -599,7 +602,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2467035185685552254
 RectTransform:
   m_ObjectHideFlags: 0
