@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 869cc8e453ae24941893831fa221eec2, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  maxPlayersUnmutedBeforeWarning: 7
-  maxPlayersBeforeLoD: 5
+  maxPlayersUnmutedBeforeWarning: 3
+  maxPlayersBeforeLoDLevel1: 2
+  maxPlayersBeforeLoDLevel2: 3
+  blockUnmutingAfterMaxUsers: 0

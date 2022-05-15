@@ -14,7 +14,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     bool isMicUnmuted = false;
     public Sprite muted, unmuted;
     public Image micIcon;
-
+    public LoDHandler lodHandler;
     private void Start()
     {
         if (!photonView.IsMine)
@@ -22,6 +22,12 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
             if (PlayerSetup.instance.GetRole() == ERole.Professor)
             {
                 muteButton.SetActive(true);
+
+            }
+
+            if (role == ERole.Professor)
+            {
+                lodHandler.CurrentLodLevel = 0;
             }
 
             GameManager.instance.networkManager.AddPlayer(this);
@@ -38,6 +44,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
                 else if (scripts[i] is EventCamera) continue;
                 else if (scripts[i] is CanvasScaler) continue;
                 else if (scripts[i] is GraphicRaycaster) continue;
+                else if (scripts[i] is LoDHandler) continue;
 
                 Destroy(scripts[i]);
             }
@@ -55,7 +62,9 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
             {
                 GameManager.instance.uiManager.SetMutedText(false);
             }
+            lodHandler.CurrentLodLevel = 2;
             Camera.main.GetComponent<PlayerCam>().SetPlayer(this.transform);
+            GameManager.instance.StartLoDOperations();
         }
 
     }
@@ -69,11 +78,15 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
 
         }
 
+
+
     }
 
     public void ToggleMic()
     {
-        Debug.Log("Mic toggle");
+        if (GameManager.instance.gameSettings.blockUnmutingAfterMaxUsers && GameManager.instance.UnmutedCounter >= GameManager.instance.gameSettings.maxPlayersUnmutedBeforeWarning)
+            return;
+
         photonView.RPC("RPC_ToggleMic", RpcTarget.All, photonView.ViewID);
     }
 
@@ -100,6 +113,15 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
         if (np.isMicUnmuted)
         {
             np.micIcon.sprite = unmuted;
+
+
+            GameManager.instance.UnmutedCounter += 1;
+
+            if (GameManager.instance.UnmutedCounter >= GameManager.instance.gameSettings.maxPlayersUnmutedBeforeWarning)
+            {
+                GameManager.instance.uiManager.ShowWarningForUnmutingMaxUsers();
+            }
+
             if (np.photonView.IsMine)
             {
                 GameManager.instance.uiManager.SetMutedText(false);
@@ -109,6 +131,10 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
         {
             np.micIcon.sprite = muted;
             np.speakingGO.SetActive(false);
+
+            GameManager.instance.UnmutedCounter -= 1;
+
+
             if (np.photonView.IsMine)
             {
                 GameManager.instance.uiManager.SetMutedText(true);

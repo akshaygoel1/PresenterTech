@@ -63,6 +63,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         Debug.Log("Connecting...");
     }
+
+    public NetworkPlayer GetClientPlayer()
+    {
+        return myPlayer;
+    }
+
     #region CONNECTION
     public override void OnConnectedToMaster()
     {

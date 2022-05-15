@@ -7,7 +7,7 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
     public TextMeshProUGUI mutedText;
-
+    public GameObject warningPopupForUnmutingMaxUsers;
 
     public void SetMutedText(bool isMuted)
     {
@@ -21,7 +21,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
-
+    public void ShowWarningForUnmutingMaxUsers()
+    {
+        warningPopupForUnmutingMaxUsers.SetActive(true);
+    }
 
 
 }
