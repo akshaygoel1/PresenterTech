@@ -15,6 +15,10 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     public Sprite muted, unmuted;
     public Image micIcon;
     public LoDHandler lodHandler;
+    bool isHandRaised = false;
+    public GameObject raiseHandIcon;
+    public PlayerMovement playerMovement;
+    public GameObject userHandleCanvas;
     private void Start()
     {
         if (!photonView.IsMine)
@@ -31,23 +35,25 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
             }
 
             GameManager.instance.networkManager.AddPlayer(this);
-            MonoBehaviour[] scripts = GetComponentsInChildren<MonoBehaviour>();
-            for (int i = 0; i < scripts.Length; i++)
-            {
-                if (scripts[i] is NetworkPlayer) continue;
-                else if (scripts[i] is PhotonView) continue;
-                else if (scripts[i] is PhotonTransformView) continue;
-                else if (scripts[i] is PhotonVoiceView) continue;
-                else if (scripts[i] is Speaker) continue;
-                else if (scripts[i] is Button) continue;
-                else if (scripts[i] is Image) continue;
-                else if (scripts[i] is EventCamera) continue;
-                else if (scripts[i] is CanvasScaler) continue;
-                else if (scripts[i] is GraphicRaycaster) continue;
-                else if (scripts[i] is LoDHandler) continue;
+            Destroy(playerMovement);
+            Destroy(userHandleCanvas);
+            //MonoBehaviour[] scripts = GetComponentsInChildren<MonoBehaviour>();
+            //for (int i = 0; i < scripts.Length; i++)
+            //{
+            //    if (scripts[i] is NetworkPlayer) continue;
+            //    else if (scripts[i] is PhotonView) continue;
+            //    else if (scripts[i] is PhotonTransformView) continue;
+            //    else if (scripts[i] is PhotonVoiceView) continue;
+            //    else if (scripts[i] is Speaker) continue;
+            //    else if (scripts[i] is Button) continue;
+            //    else if (scripts[i] is Image) continue;
+            //    else if (scripts[i] is EventCamera) continue;
+            //    else if (scripts[i] is CanvasScaler) continue;
+            //    else if (scripts[i] is GraphicRaycaster) continue;
+            //    else if (scripts[i] is LoDHandler) continue;
 
-                Destroy(scripts[i]);
-            }
+            //    Destroy(scripts[i]);
+            //}
         }
         else
         {
@@ -77,10 +83,9 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
                 photonView.RPC("RPC_SpeakerIcon", RpcTarget.All, photonView.ViewID, this.photonVoiceView.IsRecording);
 
         }
-
-
-
     }
+
+    #region Voice Functions
 
     public void ToggleMic()
     {
@@ -141,8 +146,20 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
             }
 
         }
+    }
+    #endregion
 
 
+    public void ToggleRaiseHand()
+    {
+        photonView.RPC("RPC_ToggleRaiseHand", RpcTarget.All, photonView.ViewID, !isHandRaised);
+    }
 
+    [PunRPC]
+    public void RPC_ToggleRaiseHand(int photonViewID, bool enabled)
+    {
+        NetworkPlayer networkPlayer = GameManager.instance.networkManager.allPlayers.Find(x => x.photonView.ViewID == photonViewID);
+        networkPlayer.raiseHandIcon.SetActive(enabled);
+        networkPlayer.isHandRaised = enabled;
     }
 }

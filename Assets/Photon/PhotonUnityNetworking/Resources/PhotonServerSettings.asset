@@ -42,6 +42,7 @@ MonoBehaviour:
   - ChangeColour
   - RPC_SpeakerIcon
   - RPC_ToggleMic
+  - RPC_ToggleRaiseHand
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

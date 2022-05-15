@@ -414,6 +414,9 @@ MonoBehaviour:
   unmuted: {fileID: 21300000, guid: 4c4fe505d7d6f7a4480d3428a30caf40, type: 3}
   micIcon: {fileID: 5000041982547938733}
   lodHandler: {fileID: 5099758956719553156}
+  raiseHandIcon: {fileID: 0}
+  playerMovement: {fileID: 7246950831132964118}
+  userHandleCanvas: {fileID: 0}
 --- !u!114 &7246950831132964118
 MonoBehaviour:
   m_ObjectHideFlags: 0
