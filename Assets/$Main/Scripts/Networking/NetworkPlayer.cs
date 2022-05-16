@@ -1,11 +1,9 @@
 ﻿using Photon.Pun;
 using Photon.Voice.PUN;
-using Photon.Voice.Unity;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.XR.CoreUtils;
 public class NetworkPlayer : MonoBehaviourPunCallbacks
 {
     public PhotonView photonView;
@@ -21,8 +19,13 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     public Image raiseHandImage;
     public Sprite raiseHandSprite, lowerHandSprite;
     public TextMeshProUGUI raiseHandText;
-    public PlayerMovement playerMovement;
+
     public GameObject userHandleCanvas;
+    public XROrigin xrOrigin;
+    public GameObject cameraOffset;
+    public GameObject locomotion;
+    public GameObject xrInteractionManager;
+
     private void Start()
     {
         if (!photonView.IsMine)
@@ -39,8 +42,12 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
             }
 
             GameManager.instance.networkManager.AddPlayer(this);
-            Destroy(playerMovement);
             Destroy(userHandleCanvas);
+            Destroy(xrOrigin);
+            Destroy(cameraOffset);
+            Destroy(locomotion);
+            Destroy(xrInteractionManager);
+
             //MonoBehaviour[] scripts = GetComponentsInChildren<MonoBehaviour>();
             //for (int i = 0; i < scripts.Length; i++)
             //{
