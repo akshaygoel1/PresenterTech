@@ -415,6 +415,10 @@ MonoBehaviour:
   micIcon: {fileID: 5000041982547938733}
   lodHandler: {fileID: 5099758956719553156}
   raiseHandIcon: {fileID: 0}
+  raiseHandImage: {fileID: 0}
+  raiseHandSprite: {fileID: 0}
+  lowerHandSprite: {fileID: 0}
+  raiseHandText: {fileID: 0}
   playerMovement: {fileID: 7246950831132964118}
   userHandleCanvas: {fileID: 0}
 --- !u!114 &7246950831132964118

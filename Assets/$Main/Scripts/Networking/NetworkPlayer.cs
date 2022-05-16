@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 public class NetworkPlayer : MonoBehaviourPunCallbacks
 {
     public PhotonView photonView;
@@ -17,6 +18,9 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     public LoDHandler lodHandler;
     bool isHandRaised = false;
     public GameObject raiseHandIcon;
+    public Image raiseHandImage;
+    public Sprite raiseHandSprite, lowerHandSprite;
+    public TextMeshProUGUI raiseHandText;
     public PlayerMovement playerMovement;
     public GameObject userHandleCanvas;
     private void Start()
@@ -111,6 +115,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
         if (np.photonView.IsMine)
         {
             np.photonVoiceView.RecorderInUse.TransmitEnabled = np.isMicUnmuted;
+
         }
 
 
@@ -130,6 +135,10 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
             if (np.photonView.IsMine)
             {
                 GameManager.instance.uiManager.SetMutedText(false);
+                if (np.isHandRaised)
+                {
+                    np.ToggleRaiseHand();
+                }
             }
         }
         else
@@ -143,6 +152,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
             if (np.photonView.IsMine)
             {
                 GameManager.instance.uiManager.SetMutedText(true);
+
             }
 
         }
@@ -161,5 +171,23 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
         NetworkPlayer networkPlayer = GameManager.instance.networkManager.allPlayers.Find(x => x.photonView.ViewID == photonViewID);
         networkPlayer.raiseHandIcon.SetActive(enabled);
         networkPlayer.isHandRaised = enabled;
+        if (networkPlayer.photonView.IsMine)
+            networkPlayer.UpdateRaiseHandControls();
     }
+
+
+    public void UpdateRaiseHandControls()
+    {
+        if (isHandRaised)
+        {
+            raiseHandImage.sprite = lowerHandSprite;
+            raiseHandText.text = "Lower Hand";
+        }
+        else
+        {
+            raiseHandImage.sprite = raiseHandSprite;
+            raiseHandText.text = "Raise Hand";
+        }
+    }
+
 }
