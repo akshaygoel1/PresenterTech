@@ -451,9 +451,12 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 2
+  observableSearch: 0
   ObservedComponents:
   - {fileID: 3913833085754950405}
+  - {fileID: 6726911936368548791}
+  - {fileID: 3646215931225908904}
+  - {fileID: 2013282672173329730}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -500,10 +503,6 @@ MonoBehaviour:
   lowerHandSprite: {fileID: 0}
   raiseHandText: {fileID: 0}
   userHandleCanvas: {fileID: 0}
-  xrOrigin: {fileID: 0}
-  cameraOffset: {fileID: 0}
-  locomotion: {fileID: 0}
-  xrInteractionManager: {fileID: 0}
 --- !u!114 &468567916949664004
 MonoBehaviour:
   m_ObjectHideFlags: 0
