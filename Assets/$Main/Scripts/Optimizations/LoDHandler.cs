@@ -76,19 +76,19 @@ public class LoDHandler : MonoBehaviour
         {
             leftHand.gameObject.SetActive(false);
             rightHand.gameObject.SetActive(false);
-            photonView.ObservedComponents.Remove(leftHandPTV);
-            photonView.ObservedComponents.Remove(rightHandPTV);
-            leftHandPTV.enabled = false;
-            rightHandPTV.enabled = false;
+            //photonView.ObservedComponents.Remove(leftHandPTV);
+            //photonView.ObservedComponents.Remove(rightHandPTV);
+            //leftHandPTV.enabled = false;
+            //rightHandPTV.enabled = false;
         }
         else if (currentLodLevel == 0 && !photonView.IsMine)
         {
             leftHand.gameObject.SetActive(true);
             rightHand.gameObject.SetActive(true);
-            leftHandPTV.enabled = true;
-            rightHandPTV.enabled = true;
-            photonView.ObservedComponents.Add(leftHandPTV);
-            photonView.ObservedComponents.Add(rightHandPTV);
+            //leftHandPTV.enabled = true;
+            //rightHandPTV.enabled = true;
+            //photonView.ObservedComponents.Add(leftHandPTV);
+            //photonView.ObservedComponents.Add(rightHandPTV);
 
         }
     }
