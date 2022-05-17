@@ -30,7 +30,12 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void ShowWarningForUnmutingMaxUsers()
     {
-        warningPopupForUnmutingMaxUsers.SetActive(true);
+        //warningPopupForUnmutingMaxUsers.SetActive(true);
+        List<NetworkPlayer> professors = GameManager.instance.networkManager.allPlayers.FindAll(x => x.role == ERole.Professor);
+        for (int i = 0; i < professors.Count; i++)
+        {
+            professors[i].warningPopup.SetActive(true);
+        }
     }
 
 

@@ -21,6 +21,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     public TextMeshProUGUI raiseHandText;
 
     public GameObject userHandleCanvas;
+    public GameObject warningPopup;
     //public XROrigin xrOrigin;
     //public GameObject cameraOffset;
     //public GameObject locomotion;
