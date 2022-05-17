@@ -51,7 +51,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
         }
         else
         {
-            transform.SetParent(GameManager.instance.xrOrigin.transform);
+            GameManager.instance.xrOrigin.transform.SetParent(transform);
             GameManager.instance.xrOrigin.transform.position = Vector3.zero;
             GameManager.instance.networkManager.AddMyPlayer(this);
             GameManager.instance.networkManager.AddPlayer(this);
