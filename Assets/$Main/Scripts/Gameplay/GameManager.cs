@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public GameSettings gameSettings;
     public UIManager uiManager;
     public NetworkManager networkManager;
-
+    public GameObject xrOrigin;
     int unmutedCounter = 1;
 
     public int UnmutedCounter

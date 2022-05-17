@@ -51,6 +51,8 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
         }
         else
         {
+            transform.SetParent(GameManager.instance.xrOrigin.transform);
+            GameManager.instance.xrOrigin.transform.position = Vector3.zero;
             GameManager.instance.networkManager.AddMyPlayer(this);
             GameManager.instance.networkManager.AddPlayer(this);
             if (role == ERole.Student) //If this client's role is of a student
@@ -64,6 +66,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
             }
             lodHandler.CurrentLodLevel = 0;
             GameManager.instance.StartLoDOperations();
+
         }
 
     }
