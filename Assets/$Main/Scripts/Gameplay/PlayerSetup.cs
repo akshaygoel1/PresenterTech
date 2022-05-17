@@ -4,15 +4,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public enum ERole
 {
-    None,
+    None = 0,
     Professor,
     Student
 }
 public class PlayerSetup : MonoBehaviour
 {
     public static PlayerSetup instance = null;
-
-
 
     ERole role = ERole.None;
 
@@ -30,18 +28,16 @@ public class PlayerSetup : MonoBehaviour
         }
     }
 
-    public void SelectStudentRole()
+    /// <summary>
+    /// Button Press selects the role of the player
+    /// </summary>
+    /// <param name="roleID">0 -> None, 1 -> Professor, 2 -> Student </param>
+    public void SelectRole(int roleID)
     {
-        role = ERole.Student;
+        role = (ERole)roleID;
         EnterGameScene();
     }
 
-    public void SelectProfessorRole()
-    {
-        role = ERole.Professor;
-        EnterGameScene();
-
-    }
 
     public void EnterGameScene()
     {

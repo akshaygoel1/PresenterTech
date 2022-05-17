@@ -9,6 +9,10 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI mutedText;
     public GameObject warningPopupForUnmutingMaxUsers;
 
+    /// <summary>
+    /// Set the muted text on the HUD
+    /// </summary>
+    /// <param name="isMuted"></param>
     public void SetMutedText(bool isMuted)
     {
         if (isMuted)
@@ -21,6 +25,9 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Enable the warning popup
+    /// </summary>
     public void ShowWarningForUnmutingMaxUsers()
     {
         warningPopupForUnmutingMaxUsers.SetActive(true);

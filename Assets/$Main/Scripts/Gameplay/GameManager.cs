@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
             unmutedCounter = value;
             if (unmutedCounter >= gameSettings.maxPlayersUnmutedBeforeWarning)
             {
-                uiManager.ShowWarningForUnmutingMaxUsers();
+                uiManager.ShowWarningForUnmutingMaxUsers(); //Show Warning Popup if max number of users are unmuted
             }
         }
     }
@@ -33,20 +33,27 @@ public class GameManager : MonoBehaviour
             Destroy(this);
     }
 
+    /// <summary>
+    /// Level of Details Operation
+    /// </summary>
     public void StartLoDOperations()
     {
         Debug.Log("Starting LoD operations");
         StartCoroutine(LoDOperations());
     }
 
+    /// <summary>
+    /// This function checks the distance from all the other players and sorts them in the list and renders them based on distance and various other parameters
+    /// </summary>
+    /// <returns></returns>
     IEnumerator LoDOperations()
     {
         while (true)
         {
             yield return new WaitForSeconds(1);
-            networkManager.allPlayers.RemoveAll(x => x == null);
-            networkManager.allPlayers = networkManager.allPlayers.OrderBy(x => Vector3.SqrMagnitude(networkManager.GetClientPlayer().transform.position - x.transform.position)).ToList();
-            int professorCount = 0;//networkManager.GetClientPlayer().role == ERole.Professor ? 0 : networkManager.allPlayers.Count(x => x.role == ERole.Professor);
+            networkManager.allPlayers.RemoveAll(x => x == null); //Remove all players that have left the scene
+            networkManager.allPlayers = networkManager.allPlayers.OrderBy(x => Vector3.SqrMagnitude(networkManager.GetClientPlayer().transform.position - x.transform.position)).ToList(); //Sort players based on distance
+            int professorCount = 0;
             int myCounter = 0;
             for (int i = 0; i < networkManager.allPlayers.Count; i++)
             {

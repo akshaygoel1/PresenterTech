@@ -28,59 +28,41 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        if (!photonView.IsMine)
+        if (!photonView.IsMine) //If this network player client is not mine
         {
-            if (PlayerSetup.instance.GetRole() == ERole.Professor)
+            if (PlayerSetup.instance.GetRole() == ERole.Professor) //If my player is a professor
             {
-                muteButton.SetActive(true);
-
+                muteButton.SetActive(true); //Enable the mute button on the other user
             }
 
-            if (role == ERole.Professor)
+            if (role == ERole.Professor) //If this network player client's role is of a professor
             {
-                lodHandler.CurrentLodLevel = 0;
+                lodHandler.CurrentLodLevel = 0; //Set them to LOD Level 0, which renders them in the highest possible quality
             }
 
-            GameManager.instance.networkManager.AddPlayer(this);
+            GameManager.instance.networkManager.AddPlayer(this); // Add the player to the list
+
+            //Destroy all components/objects which we don't want to access on the other user
             Destroy(userHandleCanvas);
             Destroy(xrOrigin);
             Destroy(cameraOffset);
             Destroy(locomotion);
             Destroy(xrInteractionManager);
-
-            //MonoBehaviour[] scripts = GetComponentsInChildren<MonoBehaviour>();
-            //for (int i = 0; i < scripts.Length; i++)
-            //{
-            //    if (scripts[i] is NetworkPlayer) continue;
-            //    else if (scripts[i] is PhotonView) continue;
-            //    else if (scripts[i] is PhotonTransformView) continue;
-            //    else if (scripts[i] is PhotonVoiceView) continue;
-            //    else if (scripts[i] is Speaker) continue;
-            //    else if (scripts[i] is Button) continue;
-            //    else if (scripts[i] is Image) continue;
-            //    else if (scripts[i] is EventCamera) continue;
-            //    else if (scripts[i] is CanvasScaler) continue;
-            //    else if (scripts[i] is GraphicRaycaster) continue;
-            //    else if (scripts[i] is LoDHandler) continue;
-
-            //    Destroy(scripts[i]);
-            //}
         }
         else
         {
             GameManager.instance.networkManager.AddMyPlayer(this);
             GameManager.instance.networkManager.AddPlayer(this);
-            if (role == ERole.Student)
+            if (role == ERole.Student) //If this client's role is of a student
             {
-                GameManager.instance.uiManager.SetMutedText(true);
+                GameManager.instance.uiManager.SetMutedText(true); //Set them as muted (default)
                 photonVoiceView.RecorderInUse.TransmitEnabled = false;
             }
             else
             {
-                GameManager.instance.uiManager.SetMutedText(false);
+                GameManager.instance.uiManager.SetMutedText(false);//Set them as unmuted (default)
             }
-            lodHandler.CurrentLodLevel = 2;
-            Camera.main.GetComponent<PlayerCam>().SetPlayer(this.transform);
+            lodHandler.CurrentLodLevel = 0;
             GameManager.instance.StartLoDOperations();
         }
 
@@ -97,10 +79,12 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     }
 
     #region Voice Functions
-
+    /// <summary>
+    /// Toggle the mic on this client user
+    /// </summary>
     public void ToggleMic()
     {
-        if (GameManager.instance.gameSettings.blockUnmutingAfterMaxUsers && GameManager.instance.UnmutedCounter >= GameManager.instance.gameSettings.maxPlayersUnmutedBeforeWarning)
+        if (GameManager.instance.gameSettings.blockUnmutingAfterMaxUsers && GameManager.instance.UnmutedCounter >= GameManager.instance.gameSettings.maxPlayersUnmutedBeforeWarning && !isMicUnmuted)
             return;
 
         photonView.RPC("RPC_ToggleMic", RpcTarget.All, photonView.ViewID);
@@ -122,16 +106,11 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
         if (np.photonView.IsMine)
         {
             np.photonVoiceView.RecorderInUse.TransmitEnabled = np.isMicUnmuted;
-
         }
-
-
 
         if (np.isMicUnmuted)
         {
             np.micIcon.sprite = unmuted;
-
-
             GameManager.instance.UnmutedCounter += 1;
 
             if (GameManager.instance.UnmutedCounter >= GameManager.instance.gameSettings.maxPlayersUnmutedBeforeWarning)
@@ -155,18 +134,16 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
 
             GameManager.instance.UnmutedCounter -= 1;
 
-
             if (np.photonView.IsMine)
             {
                 GameManager.instance.uiManager.SetMutedText(true);
-
             }
 
         }
     }
     #endregion
 
-
+    #region Raise Hand Functionality
     public void ToggleRaiseHand()
     {
         photonView.RPC("RPC_ToggleRaiseHand", RpcTarget.All, photonView.ViewID, !isHandRaised);
@@ -196,5 +173,7 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
             raiseHandText.text = "Raise Hand";
         }
     }
+
+    #endregion
 
 }
