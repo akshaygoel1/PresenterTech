@@ -21,10 +21,10 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
     public TextMeshProUGUI raiseHandText;
 
     public GameObject userHandleCanvas;
-    public XROrigin xrOrigin;
-    public GameObject cameraOffset;
-    public GameObject locomotion;
-    public GameObject xrInteractionManager;
+    //public XROrigin xrOrigin;
+    //public GameObject cameraOffset;
+    //public GameObject locomotion;
+    //public GameObject xrInteractionManager;
 
     private void Start()
     {
@@ -44,10 +44,10 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
 
             //Destroy all components/objects which we don't want to access on the other user
             Destroy(userHandleCanvas);
-            Destroy(xrOrigin);
-            Destroy(cameraOffset);
-            Destroy(locomotion);
-            Destroy(xrInteractionManager);
+            //Destroy(xrOrigin);
+            //Destroy(cameraOffset);
+            //Destroy(locomotion);
+            //Destroy(xrInteractionManager);
         }
         else
         {

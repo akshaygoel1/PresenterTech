@@ -11,8 +11,6 @@ public class LoDHandler : MonoBehaviour
     public Transform head, leftHand, rightHand;
     public PhotonView photonView;
 
-    public PhotonTransformView leftHandPTV, rightHandPTV;
-
     /// <summary>
     /// CurrentLodLevel property can be used to get or set the LoD level. If the LoD level is set, it calls the SetLodLevel() function
     /// </summary>
