@@ -52,7 +52,8 @@ public class NetworkPlayer : MonoBehaviourPunCallbacks
         else
         {
             GameManager.instance.xrOrigin.transform.SetParent(transform);
-            GameManager.instance.xrOrigin.transform.position = Vector3.zero;
+            GameManager.instance.xrOrigin.transform.localPosition = Vector3.zero;
+            GameManager.instance.xrOrigin.transform.localRotation = Quaternion.identity;
             GameManager.instance.networkManager.AddMyPlayer(this);
             GameManager.instance.networkManager.AddPlayer(this);
             if (role == ERole.Student) //If this client's role is of a student
