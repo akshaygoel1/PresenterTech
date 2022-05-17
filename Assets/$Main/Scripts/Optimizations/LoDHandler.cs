@@ -47,8 +47,8 @@ public class LoDHandler : MonoBehaviour
         InputDevices.GetDeviceAtXRNode(node).TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 pos);
         InputDevices.GetDeviceAtXRNode(node).TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rot);
 
-        target.localPosition = pos;
-        target.localRotation = rot;
+        target.position = pos;
+        target.rotation = rot;
     }
 
     /// <summary>
